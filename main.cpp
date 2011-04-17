@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
@@ -13,16 +14,13 @@ struct Stack{
 Stack *createStack(Stack*);
 Stack *pushStack(Stack* ,char);
 char popStack(Stack*);
-
+void postFIX(Stack*);
 
 
 
 int main(){
   int a = 0;
   char flip;
-  //keep white speace in front and back of
-  //notation and no white space between
-  //characters.
   string fix = " (A+(B*C)) ";
   Stack *infix = new(nothrow) Stack;
   if(!infix){
@@ -33,7 +31,7 @@ int main(){
     cout << "Allocation Error!" << endl;
   }
   createStack(infix);
-  cout << "INFIX: ";
+
   while(fix[a] != '\0'){
     pushStack(infix,fix[a]);
     a++;
@@ -43,11 +41,9 @@ int main(){
    flip = popStack(infix);
    pushStack(reverse,flip);
   }
-  while(reverse->top->next != 0){
-   flip = popStack(reverse);
-   cout << flip;
-  }
-  cout << endl;
+  ///now take ordered stack and change to
+  ///postfix
+  postFIX(reverse);
 
   return 0;
 }
@@ -92,4 +88,36 @@ char popStack(Stack* pop){
   delete dltPtr;
   //return character data.
   return outData;
+}
+void postFIX(Stack *in){
+  Stack *postList = new(nothrow) Stack;
+  if(!postList){
+    cout << "Allocation Error!" << endl;
+  }
+  int index;
+  char post;
+  char expression[20];
+  
+  while(in->top->next != 0){
+   post =  popStack(in);
+   if(post == '('){
+     //open bracket
+     pushStack(postList,post);
+   }
+   if(post == ')'){
+     //closed bracket
+     while(post == ')' && postList != 0){
+       expression[index] = post;
+       post =  popStack(in);
+     }
+   }
+   if(post == '*' || post == '+' || post == '-'|| post == '/'){
+     //operators
+     while((post == '*' || post == '+' || post == '-'|| post == '/') && (postList != 0)){
+      
+     }
+   }
+   index++;
+  }
+  cin.get(); 
 }
