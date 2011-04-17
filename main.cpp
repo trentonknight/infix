@@ -14,6 +14,7 @@ struct Stack{
 Stack *createStack(Stack*);
 Stack *pushStack(Stack* ,char);
 char popStack(Stack*);
+char topStack(Stack*);
 void postFIX(Stack*);
 
 
@@ -89,16 +90,23 @@ char popStack(Stack* pop){
   //return character data.
   return outData;
 }
+char topStack(Stack* pop){
+  char outData;
+
+  outData = pop->top->data;
+
+  return outData;
+}
 void postFIX(Stack *in){
   Stack *postList = new(nothrow) Stack;
   if(!postList){
     cout << "Allocation Error!" << endl;
   }
   int index;
-  char post;
+  char post, stackTop;
   char expression[20];
   
-  while(in->top->next != 0){
+  while(in->top != 0){
    post =  popStack(in);
    if(post == '('){
      //open bracket
@@ -106,16 +114,22 @@ void postFIX(Stack *in){
    }
    if(post == ')'){
      //closed bracket
-     while(post == ')' && postList != 0){
+     while(post == ')'){
        expression[index] = post;
        post =  popStack(in);
      }
    }
    if(post == '*' || post == '+' || post == '-'|| post == '/'){
      //operators
-     while((post == '*' || post == '+' || post == '-'|| post == '/') && (postList != 0)){
-      
+     stackTop = topStack(in);
+     while((in != 0) && (post <= stackTop )){
+         post =  popStack(in);
+         expression[index] = post;
+         stackTop = topStack(in);
      }
+   }
+   else{
+       expression[index] = post;
    }
    index++;
   }
