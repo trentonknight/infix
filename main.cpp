@@ -16,7 +16,7 @@ Stack *pushStack(Stack* ,char);
 char popStack(Stack*);
 char topStack(Stack*);
 void postFIX(Stack*);
-
+bool valueMonster(char,char);
 
 
 int main(){
@@ -105,6 +105,7 @@ void postFIX(Stack *in){
   int index;
   char post, stackTop, clearStack;
   char expression[20];
+  bool great = true;
   
   while(in->top != 0){
     post = popStack(in);
@@ -114,7 +115,8 @@ void postFIX(Stack *in){
       }
       else{
 	stackTop = topStack(postList);
-        if(stackTop > post){
+        great = valueMonster(post,stackTop);
+        if(great){
           pushStack(postList,post);
 	}
         else{
@@ -133,4 +135,13 @@ void postFIX(Stack *in){
     }
   }
   cin.get(); 
+}
+bool valueMonster(char topChar,char currChar){
+  bool greater = false;
+  
+  if((topChar == '*' || topChar == '/') && (currChar == '+' || currChar == '-')){
+    greater = true;
+  }
+  
+  return greater;
 }
