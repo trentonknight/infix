@@ -22,7 +22,7 @@ bool valueMonster(char,char);
 int main(){
   int a = 0;
   char flip;
-  string fix = " A+B*C-D/E  ";
+  string fix = " (A+B)*C+D+E*F-G ";
   Stack *infix = new(nothrow) Stack;
   if(!infix){
     cout << "Allocation Error!" << endl;
@@ -102,13 +102,26 @@ void postFIX(Stack *in){
   if(!postList){
     cout << "Allocation Error!" << endl;
   }
-  int index;
+  int index = 0, read = 0;
   char post, stackTop, clearStack;
   char expression[20];
   bool great = true;
   
   while(in->top != 0){
     post = popStack(in);
+    if(post == '('){
+      post = popStack(in);
+    }
+    if(post == ')'){
+      post = popStack(in);
+      if(postList->top != 0){
+	while(postList->top != 0){
+	  clearStack = popStack(postList);
+	  expression[index] = clearStack;
+	  index++;
+	}
+      }
+    }
     if(post == '*'||post == '+'||post == '-'||post == '/'||post == '('){
       if(postList->top == 0){
 	pushStack(postList,post);
@@ -136,11 +149,18 @@ void postFIX(Stack *in){
   }
   if(postList->top != 0){
     while(postList->top != 0){
-            clearStack = popStack(postList);
-            expression[index] = clearStack;
-            index++;
-	  }
+      clearStack = popStack(postList);
+      expression[index] = clearStack;
+      index++;
+    }
   }
+  
+  while(expression[read] != '\000'){
+    cout << expression[read];
+    read++;
+  }
+  cout << endl;
+
   cin.get(); 
 }
 bool valueMonster(char topChar,char currChar){
