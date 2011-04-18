@@ -111,16 +111,14 @@ void postFIX(Stack *in){
   while(in->top != 0){
     post = popStack(in);
     if(post == '('){
-      post = popStack(in);
+    pushStack(postList,post);
     }
     if(post == ')'){
       post = popStack(in);
       if(postList->top != 0){
-	while(postList->top != 0){
-	  clearStack = popStack(postList);
-	  expression[index] = clearStack;
-	  index++;
-	}
+      	  clearStack = popStack(postList);
+      	  expression[index] = clearStack;
+      	  index++;
       }
     }
     if(post == '*'||post == '+'||post == '-'||post == '/'||post == '('){
@@ -134,12 +132,10 @@ void postFIX(Stack *in){
           pushStack(postList,post);
 	}
         else{
-	  while(postList->top != 0){
             clearStack = popStack(postList);
             expression[index] = clearStack;
             index++;
-	  }
-          pushStack(postList,post);
+            pushStack(postList,post);
 	}
       }   
     }
@@ -170,6 +166,8 @@ bool valueMonster(char topChar,char currChar){
   if((topChar == '*' || topChar == '/') && (currChar == '+' || currChar == '-')){
     greater = true;
   }
-  
+  if(topChar == '('){
+    greater = true;
+  }
   return greater;
 }
