@@ -134,6 +134,13 @@ void postFIX(Stack *in){
       index++;
     }
   }
+  if(postList->top != 0){
+    while(postList->top != 0){
+            clearStack = popStack(postList);
+            expression[index] = clearStack;
+            index++;
+	  }
+  }
   cin.get(); 
 }
 bool valueMonster(char topChar,char currChar){
