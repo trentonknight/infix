@@ -22,7 +22,7 @@ void postFIX(Stack*);
 int main(){
   int a = 0;
   char flip;
-  string fix = " (A+(B*C)) ";
+  string fix = " A+B*C-D/E  ";
   Stack *infix = new(nothrow) Stack;
   if(!infix){
     cout << "Allocation Error!" << endl;
@@ -39,8 +39,8 @@ int main(){
   }
   //pop and restack to get ordered list
   while(infix->top->next != 0){
-   flip = popStack(infix);
-   pushStack(reverse,flip);
+    flip = popStack(infix);
+    pushStack(reverse,flip);
   }
   ///now take ordered stack and change to
   ///postfix
@@ -103,35 +103,34 @@ void postFIX(Stack *in){
     cout << "Allocation Error!" << endl;
   }
   int index;
-  char post, stackTop;
+  char post, stackTop, clearStack;
   char expression[20];
   
   while(in->top != 0){
-   post =  popStack(in);
-   if(post == '('){
-     //open bracket
-     pushStack(postList,post);
-   }
-   if(post == ')'){
-     //closed bracket
-     while(post == ')'){
-       expression[index] = post;
-       post =  popStack(in);
-     }
-   }
-   if(post == '*' || post == '+' || post == '-'|| post == '/'){
-     //operators
-     stackTop = topStack(in);
-     while((in != 0) && (post <= stackTop )){
-         post =  popStack(in);
-         expression[index] = post;
-         stackTop = topStack(in);
-     }
-   }
-   else{
-       expression[index] = post;
-   }
-   index++;
+    post = popStack(in);
+    if(post == '*'||post == '+'||post == '-'||post == '/'||post == '('){
+      if(postList->top == 0){
+	pushStack(postList,post);
+      }
+      else{
+	stackTop = topStack(postList);
+        if(stackTop > post){
+          pushStack(postList,post);
+	}
+        else{
+	  while(postList->top != 0){
+            clearStack = popStack(postList);
+            expression[index] = clearStack;
+            index++;
+	  }
+          pushStack(postList,post);
+	}
+      }   
+    }
+    else{
+      expression[index] = post;
+      index++;
+    }
   }
   cin.get(); 
 }
