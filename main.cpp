@@ -19,10 +19,11 @@ void postFIX(Stack*);
 bool valueMonster(char,char);
 
 
-int main(){
+int main(int argc,char *argv[]){
   int a = 0;
   char flip;
-  string fix = " (A+B)*C+D+E*F-G ";
+  string fix = argv[1];
+
   Stack *infix = new(nothrow) Stack;
   if(!infix){
     cout << "Allocation Error!" << endl;
@@ -33,7 +34,7 @@ int main(){
   }
   createStack(infix);
 
-  while(fix[a] != '\0'){
+  while(fix[a] != '\000'){
     pushStack(infix,fix[a]);
     a++;
   }
