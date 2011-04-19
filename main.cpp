@@ -17,6 +17,7 @@ char popStack(Stack*);
 char topStack(Stack*);
 void postFIX(Stack*);
 bool valueMonster(char,char);
+void showPostfix(char []);
 
 
 int main(int argc,char *argv[]){
@@ -103,7 +104,7 @@ void postFIX(Stack *in){
   if(!postList){
     cout << "Allocation Error!" << endl;
   }
-  int index = 0, read = 0;
+  int index = 0;
   char post, stackTop, clearStack;
   char expression[20];
   bool great = true;
@@ -143,6 +144,7 @@ void postFIX(Stack *in){
       expression[index] = post;
       index++;
     }
+   showPostfix(expression);
   }
   if(postList->top != 0){
     while(postList->top != 0){
@@ -151,12 +153,8 @@ void postFIX(Stack *in){
       index++;
     }
   }
-  
-  while(expression[read] != '\000'){
-    cout << expression[read];
-    read++;
-  }
-  cout << endl;
+ 
+  showPostfix(expression);
 
   cin.get(); 
 }
@@ -170,4 +168,17 @@ bool valueMonster(char topChar,char currChar){
     greater = true;
   }
   return greater;
+}
+void showPostfix(char exp[]){
+  int read = 0;
+
+ cout << "Postfix Notation: ";
+  while(exp[read] != '\000'){
+    if(exp[read] != '('){
+    cout << exp[read];
+    }
+    read++;
+  }
+  cout << endl;
+
 }
