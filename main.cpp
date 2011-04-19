@@ -111,13 +111,17 @@ void postFIX(Stack *in){
   
   while(in->top != 0){
     post = popStack(in);
+    cout << "Pop <= " <<post<< " from INFIX NOTATION STACK" << endl;
     if(post == '('){
     pushStack(postList,post);
+    //cout << "Push => "<<post<< " to STACK TWO" << endl;
     }
     if(post == ')'){
       post = popStack(in);
+      cout << "Pop <= " <<post<< " from INFIX NOTATION STACK" << endl;
       if(postList->top != 0){
       	  clearStack = popStack(postList);
+          cout << "Pop <= " <<clearStack<< " from STACK TWO" << endl;
       	  expression[index] = clearStack;
       	  index++;
       }
@@ -125,18 +129,22 @@ void postFIX(Stack *in){
     if(post == '*'||post == '+'||post == '-'||post == '/'||post == '('){
       if(postList->top == 0){
 	pushStack(postList,post);
+        cout << "Push => "<<post<< " to STACK TWO" << endl;
       }
       else{
 	stackTop = topStack(postList);
         great = valueMonster(post,stackTop);
         if(great){
           pushStack(postList,post);
+          cout << "Push => "<<post<< " to STACK TWO" << endl;
 	}
         else{
             clearStack = popStack(postList);
+            cout << "Pop <= " <<clearStack<< " from STACK TWO" << endl;
             expression[index] = clearStack;
             index++;
             pushStack(postList,post);
+            cout << "Push => "<<post<< " to STACK TWO" << endl;
 	}
       }   
     }
@@ -149,6 +157,7 @@ void postFIX(Stack *in){
   if(postList->top != 0){
     while(postList->top != 0){
       clearStack = popStack(postList);
+      cout << "Pop <= " <<clearStack<< " from STACK TWO" << endl;
       expression[index] = clearStack;
       index++;
     }
@@ -172,8 +181,8 @@ bool valueMonster(char topChar,char currChar){
 void showPostfix(char exp[]){
   int read = 0;
 
- cout << "Postfix Notation: ";
-  while(exp[read] != '\000'){
+ cout << "POSTFIX NOTATION: ";
+ while(exp[read] != '\000'){
     if(exp[read] != '('){
     cout << exp[read];
     }
